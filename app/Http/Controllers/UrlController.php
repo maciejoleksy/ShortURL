@@ -46,6 +46,12 @@ class UrlController extends Controller
     {
         $url = UrlShort::where('short', $link)->first();
 
+        if (!preg_match("~^(?:f|ht)tps?://~i", $url->url)) {
+            $url = "http://" . $url->url;
+
+            return redirect($url);
+        }
+
         return redirect($url->url);
     }
 }
