@@ -15,16 +15,19 @@ class UrlController extends Controller
 
     public function short(Request $request)
     {
-        $longUrl = $request->input('url');
+        $longUrl = $request->input('longUrl');
+        $shortUrl = $request->input('shortUrl');
 
-        $url = UrlShort::where('url', $longUrl)->firstOr(function () use ($longUrl){
+        $url = UrlShort::where('url', $longUrl)->firstOr(function () use ($longUrl, $shortUrl){
             return UrlShort::create([
                 'url'   => $longUrl,
-                'short' => $this->generateShortUrl(),
+                'short' => isset($shortUrl) ? $shortUrl : $this->generateShortUrl(),
             ]);
         });
 
-        return view('url.shorturl', compact('url'));
+        return view('url.shorturl', [
+            'url' => $url
+        ]);
     }
 
     public function generateShortUrl()
@@ -41,7 +44,8 @@ class UrlController extends Controller
 
     public function shortLink($link)
     {
-        $url = UrlShort::whereShort($link)->first();
+        $url = UrlShort::where('short', $link)->first();
+
         return redirect($url->url);
     }
 }
