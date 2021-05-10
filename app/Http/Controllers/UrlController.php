@@ -2,40 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\URL;
-use Illuminate\Http\Request;
 use App\Models\Models\UrlShort;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class UrlController extends Controller
 {
-    public function short(Request $request) {
-        $url = UrlShort::whereUrl($request->url)->first();
+    public function index()
+    {
+        return view('url.short');
+    }
 
-        if($url == null) {
-            $short = $this->generateShortUrl();
-            UrlShort::create([
-                'url' => $request->url,
-                'short' => $short,
+    public function short(Request $request)
+    {
+        $longUrl = $request->input('url');
+
+        $url = UrlShort::where('url', $longUrl)->firstOr(function () use ($longUrl){
+            return UrlShort::create([
+                'url'   => $longUrl,
+                'short' => $this->generateShortUrl(),
             ]);
-
-            $url = UrlShort::whereUrl($request->url)->first();
-        }
+        });
 
         return view('url.shorturl', compact('url'));
     }
 
-    public function generateShortUrl() {
+    public function generateShortUrl()
+    {
         $result = base_convert(rand(1000, 99999), 10, 36);
-        $data = UrlShort::whereShort($result)->first();
+        $data   = UrlShort::whereShort($result)->first();
 
-        if($data != null) {
+        if ($data != null) {
             $this->generateShortUrl();
         }
 
         return $result;
     }
 
-    public function shortLink($link) {
+    public function shortLink($link)
+    {
         $url = UrlShort::whereShort($link)->first();
         return redirect($url->url);
     }
