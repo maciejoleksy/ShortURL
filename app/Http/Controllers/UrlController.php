@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Repositories\ShortenerRepositoryInterface;
-use App\Models\UrlShort;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
+use App\Http\Requests\StoreRequest;
 
 class UrlController extends Controller
 {
@@ -22,9 +20,9 @@ class UrlController extends Controller
         return view('url.short');
     }
 
-    public function short(Request $request)
+    public function short(StoreRequest $request)
     {
-        $url = $this->shortenerRepository->firstOrCreate(
+        $url = $this->shortenerRepository->store(
             $request->only(
                 'longUrl',
                 'shortUrl'
@@ -38,14 +36,8 @@ class UrlController extends Controller
 
     public function shortLink($link)
     {
-        $url = UrlShort::where('short', $link)->first();
+        $url = $this->shortenerRepository->link($link);
 
-        if (!preg_match("~^(?:f|ht)tps?://~i", $url->url)) {
-            $url = "http://" . $url->url;
-
-            return redirect($url);
-        }
-
-        return redirect($url->url);
+        return redirect($url);
     }
 }

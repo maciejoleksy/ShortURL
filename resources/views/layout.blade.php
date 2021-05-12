@@ -16,8 +16,8 @@
     <body>
         <div class="container">
             <div class="row mt-5 justify-content-center">
-                <div class="col text-center">
-                    <h3>
+                <div class="col">
+                    <h3 class="text-center">
                         laravel-shortener-url - reduce a long link on easy way.
                     </h3>
                     @yield('content')

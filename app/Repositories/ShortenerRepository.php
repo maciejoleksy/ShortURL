@@ -4,28 +4,38 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\ShortenerRepositoryInterface;
 use App\Models\UrlShort;
+use Illuminate\Support\Str;
 
 class ShortenerRepository implements ShortenerRepositoryInterface
 {
-    public function firstOrCreate(array $data)
+    public function store(array $data)
     {
-        return UrlShort::where('url', $data['longUrl'])->firstOr(function () use ($data) {
-            return UrlShort::create([
-                'url'   => $data['longUrl'],
-                'short' => isset($data['shortUrl']) ? $data['shortUrl'] : $this->generateShortUrl(),
-            ]);
-        });
+        return UrlShort::create([
+            'url'   => $data['longUrl'],
+            'short' => isset($data['shortUrl']) ? $data['shortUrl'] : $this->randomUrl(),
+        ]);
     }
 
-    public function generateShortUrl()
+    public function link(string $link)
     {
-        $result = base_convert(rand(1000, 99999), 10, 36);
-        $data   = UrlShort::whereShort($result)->first();
+        $url = UrlShort::where('short', $link)->firstOrFail();
 
-        if ($data != null) {
-            $this->generateShortUrl();
+        if (!preg_match("~^(?:f|ht)tps?://~i", $url->url)) {
+            $url = "http://" . $url->url;
+
+            return $url;
         }
 
-        return $result;
+        return $url->url;
+    }
+
+    public function randomUrl()
+    {
+        $randomUrl = strtolower(Str::random());
+        if (UrlShort::where('short', $randomUrl)->first() === null) {
+            return $randomUrl;
+        }
+
+        return $this->randomUrl();
     }
 }

@@ -16,7 +16,7 @@ class UrlShort extends Migration
         Schema::create('urlshort', function (Blueprint $table){
             $table->increments('id');
             $table->string('url');
-            $table->string('short', 5);
+            $table->string('short')->unique();
             $table->timestamps();
         });
     }

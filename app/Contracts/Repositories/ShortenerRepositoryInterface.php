@@ -6,7 +6,9 @@ use App\Models\UrlShort;
 
 interface ShortenerRepositoryInterface
 {
-    public function firstOrCreate(array $data);
+    public function store(array $data);
 
-    public function generateShortUrl();
+    public function randomUrl();
+
+    public function link(string $link);
 }
