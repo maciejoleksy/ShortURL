@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\LinkController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UrlController;
 
-Route::get('/', [UrlController::class, 'index'])->name('index');
-Route::post('short', [UrlController::class, 'short'])->name('short');
-Route::get('{link}', [UrlController::class, 'shortLink'])->name('short.link');
+Route::get('/', [LinkController::class, 'index'])->name('index');
+Route::post('store', [LinkController::class, 'store'])->name('store');
+Route::get('{shortName}', [LinkController::class, 'getLinkByShortName'])->name('get.link.by.short.name');

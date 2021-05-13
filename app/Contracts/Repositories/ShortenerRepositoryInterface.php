@@ -2,13 +2,11 @@
 
 namespace App\Contracts\Repositories;
 
-use App\Models\UrlShort;
-
 interface ShortenerRepositoryInterface
 {
     public function store(array $data);
 
-    public function randomUrl();
+    public function generateShortName();
 
-    public function link(string $link);
+    public function getLinkByShortName(string $shortName);
 }

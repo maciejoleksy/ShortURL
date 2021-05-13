@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Contracts\Repositories\ShortenerRepositoryInterface;
 use App\Http\Requests\StoreRequest;
 
-class UrlController extends Controller
+class LinkController extends Controller
 {
     private $shortenerRepository;
 
@@ -20,9 +20,9 @@ class UrlController extends Controller
         return view('url.short');
     }
 
-    public function short(StoreRequest $request)
+    public function store(StoreRequest $request)
     {
-        $url = $this->shortenerRepository->store(
+        $link = $this->shortenerRepository->store(
             $request->only(
                 'longUrl',
                 'shortUrl'
@@ -30,14 +30,14 @@ class UrlController extends Controller
         );
 
         return view('url.shorturl', [
-            'url' => $url,
+            'link' => $link,
         ]);
     }
 
-    public function shortLink($link)
+    public function getLinkByShortName(string $shortName)
     {
-        $url = $this->shortenerRepository->link($link);
+        $longLink = $this->shortenerRepository->getLinkByShortName($shortName);
 
-        return redirect($url);
+        return redirect($longLink);
     }
 }

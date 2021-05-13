@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'longUrl'  => 'required',
-            'shortUrl' => 'unique:urlshort,short',
+            'shortUrl' => 'unique:links,short_name',
         ];
     }
 

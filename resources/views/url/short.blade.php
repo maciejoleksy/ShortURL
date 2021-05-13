@@ -3,7 +3,7 @@
 <h3 class="text-center">
     Generate short url
 </h3>
-<form action="{{ url('/short') }}" method="post">
+<form action="{{ url('/store') }}" method="post">
     <div class="alerts">
     @if($errors->any())
         <div class="alert alert-danger" role="alert">

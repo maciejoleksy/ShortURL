@@ -3,39 +3,37 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\ShortenerRepositoryInterface;
-use App\Models\UrlShort;
+use App\Models\Link;
 use Illuminate\Support\Str;
 
 class ShortenerRepository implements ShortenerRepositoryInterface
 {
     public function store(array $data)
     {
-        return UrlShort::create([
-            'url'   => $data['longUrl'],
-            'short' => isset($data['shortUrl']) ? $data['shortUrl'] : $this->randomUrl(),
+        return Link::create([
+            'link'   => $data['longUrl'],
+            'short_name' => isset($data['shortUrl']) ? $data['shortUrl'] : $this->generateShortName(),
         ]);
     }
 
-    public function link(string $link)
+    public function getLinkByShortName(string $shortName)
     {
-        $url = UrlShort::where('short', $link)->firstOrFail();
+        $link = Link::where('short_name', $shortName)->firstOrFail();
 
-        if (!preg_match("~^(?:f|ht)tps?://~i", $url->url)) {
-            $url = "http://" . $url->url;
-
-            return $url;
+        if (!preg_match("~^(?:f|ht)tps?://~i", $link->link)) {
+            return $link = "http://" . $link->link;
         }
 
-        return $url->url;
+        return $link->link;
     }
 
-    public function randomUrl()
+    public function generateShortName()
     {
-        $randomUrl = strtolower(Str::random());
-        if (UrlShort::where('short', $randomUrl)->first() === null) {
-            return $randomUrl;
+        $shortName = strtolower(Str::random(6));
+        if (Link::where('short_name', $shortName)->first() === null) {
+            return $shortName;
         }
 
-        return $this->randomUrl();
+        return $this->generateShortName();
     }
 }
