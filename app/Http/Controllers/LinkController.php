@@ -15,21 +15,21 @@ class LinkController extends Controller
         $this->linkRepository = $linkRepository;
     }
 
-    public function index()
+    public function create()
     {
-        return view('url.short');
+        return view('link.create');
     }
 
     public function store(StoreRequest $request)
     {
         $link = $this->linkRepository->store(
             $request->only(
-                'longUrl',
-                'shortUrl'
+                'link',
+                'shortName'
             )
         );
 
-        return view('url.shorturl', [
+        return view('link.show', [
             'link' => $link,
         ]);
     }

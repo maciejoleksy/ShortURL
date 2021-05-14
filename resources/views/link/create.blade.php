@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
 <h3 class="text-center">
-    Generate short url
+    Generate short link
 </h3>
 <form action="{{ url('/store') }}" method="post">
     <div class="alerts">
@@ -14,8 +14,8 @@
     @endif
 </div>
     @csrf
-    <input class="form-control mx-auto" id="longUrl" name="longUrl" type="text" placeholder="Type the link to generate..." value="{{old('longUrl')}}">
-    <input class="form-control mx-auto mt-2" id="shortUrl" name="shortUrl" type="text" placeholder="Enter your own short link value..." value="{{old('shortUrl')}}">
+    <input class="form-control mx-auto" id="link" name="link" type="text" placeholder="Type the link to generate..." value="{{old('link')}}">
+    <input class="form-control mx-auto mt-2" id="shortName" name="shortName" type="text" placeholder="Enter your own short link value, if empty generate random..." value="{{old('shortName')}}">
         <button class="btn btn-primary mt-2" type="submit">
             Generate
         </button>
