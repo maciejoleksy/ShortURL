@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UrlShort extends Migration
+class CreateLinksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class UrlShort extends Migration
      */
     public function up()
     {
-        Schema::create('urlshort', function (Blueprint $table){
-            $table->increments('id');
-            $table->string('url');
-            $table->string('short', 5);
+        Schema::create('links', function (Blueprint $table){
+            $table->id();
+            $table->uuid('uuid')->unique();
+            $table->string('link');
+            $table->string('short_name')->unique();
             $table->timestamps();
         });
     }
