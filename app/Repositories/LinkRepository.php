@@ -2,17 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Contracts\Repositories\ShortenerRepositoryInterface;
+use App\Contracts\Repositories\LinkRepositoryInterface;
 use App\Models\Link;
 use Illuminate\Support\Str;
 
-class ShortenerRepository implements ShortenerRepositoryInterface
+class LinkRepository implements LinkRepositoryInterface
 {
     public function store(array $data)
     {
         return Link::create([
-            'link'   => $data['longUrl'],
-            'short_name' => isset($data['shortUrl']) ? $data['shortUrl'] : $this->generateShortName(),
+            'link'       => $data['link'],
+            'short_name' => isset($data['shortName']) ? $data['shortName'] : $this->generateShortName(),
         ]);
     }
 

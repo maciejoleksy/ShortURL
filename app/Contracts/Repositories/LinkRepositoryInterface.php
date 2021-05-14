@@ -2,7 +2,7 @@
 
 namespace App\Contracts\Repositories;
 
-interface ShortenerRepositoryInterface
+interface LinkRepositoryInterface
 {
     public function store(array $data);
 

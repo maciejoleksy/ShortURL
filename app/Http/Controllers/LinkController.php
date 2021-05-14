@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\Repositories\ShortenerRepositoryInterface;
+use App\Contracts\Repositories\LinkRepositoryInterface;
 use App\Http\Requests\StoreRequest;
 
 class LinkController extends Controller
 {
-    private $shortenerRepository;
+    private $linkRepository;
 
     public function __construct(
-        ShortenerRepositoryInterface $shortenerRepository
+        LinkRepositoryInterface $linkRepository
     ) {
-        $this->shortenerRepository = $shortenerRepository;
+        $this->linkRepository = $linkRepository;
     }
 
     public function index()
@@ -22,7 +22,7 @@ class LinkController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $link = $this->shortenerRepository->store(
+        $link = $this->linkRepository->store(
             $request->only(
                 'longUrl',
                 'shortUrl'
@@ -36,7 +36,7 @@ class LinkController extends Controller
 
     public function getLinkByShortName(string $shortName)
     {
-        $longLink = $this->shortenerRepository->getLinkByShortName($shortName);
+        $longLink = $this->linkRepository->getLinkByShortName($shortName);
 
         return redirect($longLink);
     }

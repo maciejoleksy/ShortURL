@@ -14,16 +14,16 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'longUrl'  => 'required',
-            'shortUrl' => 'unique:links,short_name',
+            'link'      => 'required',
+            'shortName' => 'unique:links,short_name',
         ];
     }
 
     public function messages()
     {
         return [
-            'shortUrl.unique'  => 'Short name is already in use',
-            'longUrl.required' => 'Link is required',
+            'link.required'    => 'Link is required',
+            'shortName.unique' => 'Short name is already in use',
         ];
     }
 }
